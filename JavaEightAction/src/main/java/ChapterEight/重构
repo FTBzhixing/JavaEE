@@ -1,0 +1,19 @@
+首先，匿名类和Lambda表达式中的this和super的含义是不同的。在匿名类中，this代表的是类自身，但是在Lambda中，它代表的是包含类。其次，匿名类可以屏蔽包含类的变量，而Lambda表达式不能
+
+我们建议你将所有使用迭代器这种数据处理模式处理集合的代码都转换成Stream API的方式。为什么呢？Stream API能更清晰地表达数据处理管道的意图。
+除此之外，通过短路和延迟载入以及利用第7章介绍的现代计算机的多核架构，我们可以对Stream进行优化。
+
+增加代码的灵活性
+1.采用函数接口
+2.有条件的延迟执行
+普通方案
+if (logger.isLoggable(Log.FINER)){
+logger.finer("Problem: " + generateDiagnostic()); }
+更好的方案是使用log方法，该方法在输出日志消息之前，会在内部检查日志对象是否已经设置为恰当的日志等级
+log方法接受一个Supplier作为参数。这个替代版本的log方法的函数签名
+public void log(Level level, Supplier<String> msgSupplier)
+
+logger.log(Level.FINER, "Problem: " + generateDiagnostic());
+logger.log(Level.FINER, () -> "Problem: " + generateDiagnostic());
+
+3.环绕执行
